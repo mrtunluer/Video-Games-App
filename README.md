@@ -1,7 +1,7 @@
 # Appcent (Apptern) Ödev Çalışması
 
 <a href="https://developer.android.com/topic/architecture?gclid=Cj0KCQjwyMiTBhDKARIsAAJ-9VuisYVaXZI7LAL3mtc7BdxY6oRFbzvhC69u1Gpatcav2ynEw5nJaYwaAs0GEALw_wcB&gclsrc=aw.ds" target="_blank">Mvvm</a> mimarisini temel alarak <a href="https://rawg.io/apidocs" target="_blank">RAWG api</a> kullanarak geliştirdiğim uygulama.\
-Utils -> Constant -> API_KEY = "yourOwnApiKey" değiştirmeyi unutmayın.
+Utils -> Constants -> API_KEY = "yourOwnApiKey" değiştirmeyi unutmayın.
 
 # ScreenShots
 
