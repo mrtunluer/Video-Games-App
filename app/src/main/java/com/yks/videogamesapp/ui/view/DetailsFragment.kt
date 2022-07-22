@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.viewbinding.library.fragment.viewBinding
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -23,14 +24,13 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class DetailsFragment : Fragment(R.layout.fragment_details) {
 
-    private lateinit var binding: FragmentDetailsBinding
+    private val binding: FragmentDetailsBinding by viewBinding()
     private val viewModel by viewModels<DetailsFragmentViewModel>()
     private var isLiked: Boolean? = null
     private lateinit var likedGames: LikedGames
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentDetailsBinding.bind(view)
         init()
         observeGameDetails()
         observeLikeBtn()
