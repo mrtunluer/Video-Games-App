@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoriteFragmentViewModel @Inject constructor(
     private val likedGamesRepo: LikedGamesRepo,
-): ViewModel() {
+) : ViewModel() {
 
     val likedGamesLiveData: MutableLiveData<PagingData<LikedGames>> by lazy {
         MutableLiveData<PagingData<LikedGames>>()
@@ -30,13 +30,13 @@ class FavoriteFragmentViewModel @Inject constructor(
     private fun getAllLikedGames(): Flow<PagingData<LikedGames>> {
         return Pager(
             config = pagingConfig(),
-            pagingSourceFactory = {likedGamesRepo.getAllLikedGames()}
+            pagingSourceFactory = { likedGamesRepo.getAllLikedGames() }
         ).flow.cachedIn(viewModelScope)
     }
 
-    private fun collectData(){
+    private fun collectData() {
         viewModelScope.launch {
-            getAllLikedGames().distinctUntilChanged().collectLatest {likedGames ->
+            getAllLikedGames().distinctUntilChanged().collectLatest { likedGames ->
                 likedGamesLiveData.value = likedGames
             }
         }

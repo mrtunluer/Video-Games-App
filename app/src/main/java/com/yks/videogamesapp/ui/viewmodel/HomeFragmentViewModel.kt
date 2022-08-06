@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeFragmentViewModel @Inject constructor(
     private val repo: GamesRepo
-): ViewModel() {
+) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     val gamesResult: MutableLiveData<PagingData<GamesResult>> by lazy {
@@ -25,14 +25,12 @@ class HomeFragmentViewModel @Inject constructor(
         getGamesResult()
     }
 
-    fun getGamesResult(){
+    fun getGamesResult() {
         compositeDisposable.add(
             repo.getGamesResult()
                 .cachedIn(viewModelScope)
                 .subscribe { result ->
-                    result?.let {
-                        gamesResult.value = it
-                    }
+                    gamesResult.value = result
                 }
         )
     }

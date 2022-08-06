@@ -12,6 +12,7 @@ import com.yks.videogamesapp.utils.DataStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
@@ -23,7 +24,7 @@ class DetailsFragmentViewModel @Inject constructor(
     private val detailRepo: DetailRepo,
     private val likedGamesRepo: LikedGamesRepo,
     savedStateHandle: SavedStateHandle
-): ViewModel() {
+) : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     val gameDetails: MutableLiveData<DataStatus<GameDetails>> by lazy {
@@ -40,22 +41,22 @@ class DetailsFragmentViewModel @Inject constructor(
         isLikedGame()
     }
 
-    fun getGameDetails(){
+    fun getGameDetails() {
         compositeDisposable.addAll(
             id?.let {
                 detailRepo.getGameDetails(it)
-                    .doOnSubscribe{gameDetails.value = DataStatus.Loading()}
+                    .doOnSubscribe { gameDetails.value = DataStatus.Loading() }
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
-                        {details -> gameDetails.value = DataStatus.Success(details)},
-                        {error -> gameDetails.value = DataStatus.Error(error.message)}
+                        { details -> gameDetails.value = DataStatus.Success(details) },
+                        { error -> gameDetails.value = DataStatus.Error(error.message) }
                     )
             }
         )
     }
 
-    fun deleteLikeGame(){
-        viewModelScope.launch {
+    fun deleteLikeGame() {
+        viewModelScope.launch(Dispatchers.IO) {
             id?.let {
                 likedGamesRepo.deleteLikedGame(id)
             }
@@ -63,7 +64,7 @@ class DetailsFragmentViewModel @Inject constructor(
     }
 
     fun insertLikedGame(likedGame: LikedGames) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             id?.let {
                 likedGamesRepo.insertLikedGame(likedGame)
             }
@@ -71,12 +72,12 @@ class DetailsFragmentViewModel @Inject constructor(
     }
 
     private fun isLikedGame() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             id?.let {
                 likedGamesRepo.getLikedGame(id).collect { isLikedGame ->
-                    if (isLikedGame != null){
+                    if (isLikedGame != null) {
                         _state.value = DataStatus.Success(isLikedGame)
-                    }else{
+                    } else {
                         _state.value = DataStatus.Empty()
                     }
                 }
